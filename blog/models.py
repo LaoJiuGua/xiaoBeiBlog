@@ -9,12 +9,19 @@ class Category(models.Model):
     """ 分类 """
 
     name = models.CharField('分类名', max_length=100)
+    class Meta:
+        verbose_name = "分类"
+        verbose_name_plural = verbose_name
 
 
 class Tag(models.Model):
     """ 标签 """
 
     name = models.CharField('标签名', max_length=100)
+
+    class Meta:
+        verbose_name = "标签"
+        verbose_name_plural = verbose_name
 
 
 class Post(models.Model):
@@ -38,7 +45,7 @@ class Post(models.Model):
     # 修改时间
     modified_time = models.DateTimeField('修改时间', auto_now=True)
 
-    class Mate:
+    class Meta:
         verbose_name = "文章"
         verbose_name_plural = verbose_name
         ordering = ('-created_time',)
