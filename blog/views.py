@@ -1,16 +1,24 @@
 from django.shortcuts import render
-
+from .models import Category, Tag, Post
 # Create your views here.
 
 
-def index(request):
-    """ 首页 """
-    return render(request, 'index.html')
+def article_list(request):
+    """ 文章列表 """
+    articles = Post.objects.all()
+
+    return render(request, 'index.html', {
+        "articles": articles
+    })
 
 
 def full_width(request):
     """ 博客 """
-    return render(request, 'full-width.html')
+    articles = Post.objects.all()
+
+    return render(request, 'full-width.html', {
+        "articles": articles
+    })
 
 
 def about(request):
@@ -23,6 +31,10 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-def single(request):
+def article_detail(request, pk):
     """ 详情 """
-    return render(request, 'single.html')
+    article = Post.objects.get(pk=pk)
+
+    return render(request, 'single.html', {
+        "article": article
+    })

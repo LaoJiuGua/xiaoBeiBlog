@@ -9,9 +9,13 @@ class Category(models.Model):
     """ 分类 """
 
     name = models.CharField('分类名', max_length=100)
+
     class Meta:
         verbose_name = "分类"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Tag(models.Model):
@@ -22,6 +26,9 @@ class Tag(models.Model):
     class Meta:
         verbose_name = "标签"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Post(models.Model):
