@@ -1,3 +1,4 @@
+import markdown
 from django.shortcuts import render
 from .models import Category, Tag, Post
 # Create your views here.
@@ -34,6 +35,12 @@ def contact(request):
 def article_detail(request, pk):
     """ 详情 """
     article = Post.objects.get(pk=pk)
+    article.body = markdown.markdown(article.body,
+                                  extensions=[
+                                      'markdown.extensions.extra',
+                                      'markdown.extensions.codehilite',
+                                      'markdown.extensions.toc',
+                                  ])
 
     return render(request, 'single.html', {
         "article": article
