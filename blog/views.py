@@ -13,8 +13,10 @@ def article_list(request):
     """ 文章列表 """
     articles = Post.objects.all()
 
+
     return render(request, 'index.html', {
-        "articles": articles
+        "articles": articles,
+
     })
 
 
@@ -40,6 +42,8 @@ def contact(request):
 def article_detail(request, pk):
     """ 详情 """
     article = get_object_or_404(Post, pk=pk)
+
+
     md = markdown.Markdown(extensions=[
                                       'markdown.extensions.extra',
                                       'markdown.extensions.codehilite',
@@ -52,5 +56,26 @@ def article_detail(request, pk):
     article.toc = m.group(1) if m is not None else ''
 
     return render(request, 'single.html', {
-        "article": article
+        "article": article,
     })
+
+
+def archive(request, year, month):
+    articles = Post.objects.filter(created_time__year=year,
+                                    created_time__month=month
+                                    ).order_by('-created_time')
+    return render(request, 'index.html', {'articles': articles})
+
+
+def category(request, pk):
+    # 记得在开始部分导入 Category 类
+    cate = get_object_or_404(Category, pk=pk)
+    articles = Post.objects.filter(category=cate).order_by('-created_time')
+    return render(request, 'index.html', {'articles': articles})
+
+
+def tag(request, pk):
+    # 记得在开始部分导入 Tag 类
+    t = get_object_or_404(Tag, pk=pk)
+    articles = Post.objects.filter(tags=t).order_by('-created_time')
+    return render(request, 'index.html', {'articles': articles})
