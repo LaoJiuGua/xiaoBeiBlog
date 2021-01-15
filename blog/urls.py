@@ -6,7 +6,8 @@ from django.views import static
 from .views import *
 
 urlpatterns = [
-    path('', article_list, name='index'),
+    path('', guidance, name='guidance'),
+    path('list/', article_list, name='index'),
     path('full/width/', full_width, name='full_width'),
     path('about/', about, name='about'),
     path('contact/', contact, name='contact'),

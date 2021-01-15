@@ -8,6 +8,9 @@ from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
 # Create your views here.
 
+def guidance(request):
+    return render(request, 'guidance.html', )
+
 
 def article_list(request):
     """ 文章列表 """

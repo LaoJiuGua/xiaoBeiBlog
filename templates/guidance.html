@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+
+    <title>小北 | 一个喜欢计算机的小白</title>
+    <meta name="description"
+        content="我是一名高中生，喜欢计算机的咸鱼一条，经常抽出空余时间学习各种语言编程以及知识，虽然懂得不多，但是这是我最喜欢的爱好吧。同时也喜欢各种游戏，FPS我的强项！沉浸在这个完美的虚拟世界，起码能暂时忘掉这充满回忆该死的现实.">
+    <meta name="keywords" content="nutssss,坚果,主页,博客,tqy,xhj">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/FiraCode.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nutssss.css' %}">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+</head>
+
+<body>
+    <div id="box">
+        <!-- 个人资料卡片 -->
+        <div class="meBox">
+            <!-- 头像 -->
+            <div class="headPhoto"></div>
+            <!-- 介绍 -->
+            <div class="meBox-title">
+                <p>I'm 小  北</p>
+                <div class="fg"></div>
+            </div>
+            <div class="meBox-text">
+                <p>幻化成孤岛的你</p>
+                <p>我乘上思念化作的船</p>
+                <p>飘啊,飘啊,去看你</p>
+                <p>独眠在山谷的你</p>
+                <p>我翻山越岭跨过山河</p>
+                <p>走着,走着,去寻你</p>
+            </div>
+            <!-- 两个按钮 -->
+            <div class="meBox-Button">
+                <a href="https://github.com/LaoJiuGua/">GitHub</a>
+                <a href="{% url 'index' %}">进入主页</a>
+            </div>
+        </div>
+
+        <!-- 伪终端介绍 -->
+        <div id="cmdBox">
+            <!-- 第一个终端 -->
+            <div class="cmd">
+                <!-- 三个按钮 -->
+                <div class="click">
+                    <div class="red"></div>
+                    <div class="yellow"></div>
+                    <div class="green"></div>
+                </div>
+                <!-- 顶部标题 -->
+                <div class="title">
+                    <span>XiaoBei - bash</span>
+                </div>
+                <!-- 终端内文字 -->
+                <div class="cmdText">
+                    <span style="color: rgb(0, 190, 0);">root@XiaoBei</span>
+                    <span style="color: blue;">~</span>
+                    <span style="color: rgb(39, 39, 39);">./tianqi.sh</span>
+                    <br />
+                    <iframe scrolling="no" src="https://tianqiapi.com/api.php?style=tc&skin=pitaya" frameborder="0"
+                        width="350" height="24" allowtransparency="true"></iframe>
+                    <br />
+                    <span style="color: rgb(0, 190, 0);">root@XiaoBei</span>
+                    <span style="color: blue;">~</span>
+                    <span style="color: rgb(39, 39, 39);">cat /me.txt</span>
+                    <p>天涯两岸闲人彷徨,</p>
+                    <p>树儿摇曳暮霭苍茫,</p>
+                    <p>一朝梦醒黑夜漫长,</p>
+                    <p>友情无终的故事可算荒唐,</p>
+                    <p>二十光景满目琳琅,</p>
+                    <p>少了你,</p>
+                    <p>愁绪满怀心上.</p>
+                    <p>芸芸众生日月既往,</p>
+                    <p>遗憾与你皆是过往.</p>
+                    <span style="color: rgb(0, 190, 0);">root@XiaoBei</span>
+                    <span style="color: blue;">~</span>
+                    <span style="color: rgb(39, 39, 39);">sudo rm -rf /过去的自己/*</span>
+                </div>
+            </div>
+            <!-- 第二个终端 -->
+            <div class="cmd cmd2">
+                <!-- 三个按钮 -->
+                <div class="click">
+                    <div class="red"></div>
+                    <div class="yellow"></div>
+                    <div class="green"></div>
+                </div>
+                <!-- 顶部标题 -->
+                <div class="title">
+                    <span>XiaoBei - bash</span>
+                </div>
+                <!-- 终端内文字 -->
+                <div class="cmdText">
+                    <span style="color: rgb(0, 190, 0);">root@XiaoBei</span>
+                    <span style="color: blue;">~</span>
+                    <span style="color: rgb(39, 39, 39);">./links.sh</span>
+                    <p>我的友情链接：</p>
+                    <ul class="ul">
+                        <li><a href="http://yiwencc.cn">一文</a></li>
+                        <li><a href="https://www.cnblogs.com/Bc01/">博客园</a></li>
+                        <li><a href="https://music.163.com/#/user/home?id=617137748">CloudMusic</a></li>
+                    </ul>
+                    <span style="color: rgb(0, 190, 0);">root@XiaoBei</span>
+                    <span style="color: blue;">~</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div id="footer">
+        <p>© <a href="https://beian.miit.gov.cn/">京ICP备2020047212号</a> | <a href="http://www.52xiaobei.cn">小北笔记网</a></p>
+        <p>THEME MADE BY <a href="http://www.52xiaobei.cn">小北</a></p>
+    </div>
+</body>
+
+</html>
