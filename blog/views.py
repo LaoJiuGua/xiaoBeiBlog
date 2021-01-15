@@ -41,7 +41,7 @@ def contact(request):
 
 def article_detail(request, pk):
     """ 详情 """
-    article = get_object_or_404(Post, pk=pk)
+    post = get_object_or_404(Post, pk=pk)
 
 
     md = markdown.Markdown(extensions=[
@@ -51,12 +51,12 @@ def article_detail(request, pk):
                                       TocExtension(slugify=slugify),
                                   ])
 
-    article.body = md.convert(article.body)
+    post.body = md.convert(post.body)
     m =re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
-    article.toc = m.group(1) if m is not None else ''
+    post.toc = m.group(1) if m is not None else ''
 
     return render(request, 'single.html', {
-        "article": article,
+        "post": post,
     })
 
 

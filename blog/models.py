@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 from datetime import datetime
 import markdown
+from django.urls import reverse
 from django.utils.html import strip_tags
 # Create your models here.
 
@@ -73,3 +74,6 @@ class Post(models.Model):
         self.excerpt = strip_tags(md.convert(self.body))[:54]
 
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'pk': self.pk})
