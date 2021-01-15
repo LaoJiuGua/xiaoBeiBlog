@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from datetime import datetime
+import markdown
+from django.utils.html import strip_tags
 # Create your models here.
 
 
@@ -59,3 +61,15 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        md = markdown.Markdown(extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+        ])
+        # 先将 Markdown 文本渲染成 HTML 文本
+        # strip_tags 去掉 HTML 文本的全部 HTML 标签
+        # 从文本摘取前 54 个字符赋给 excerpt
+        self.excerpt = strip_tags(md.convert(self.body))[:54]
+
+        super().save(*args, **kwargs)
