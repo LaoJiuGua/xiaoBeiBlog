@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include, re_path
+from django.views import static
 
 from .views import *
 
@@ -12,4 +14,8 @@ urlpatterns = [
     path('archives/<int:year>/<int:month>/', archive, name='archive'),
     path('categories/<int:pk>/', category, name='category'),
     path('tags/<int:pk>/', tag, name='tag'),
+    re_path('^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}, name='static'),
 ]
+
+handler404 = 'blog.views.page_not_found'
+# handler500 = 'index.views.page_error'

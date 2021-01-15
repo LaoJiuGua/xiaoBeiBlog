@@ -79,3 +79,12 @@ def tag(request, pk):
     t = get_object_or_404(Tag, pk=pk)
     articles = Post.objects.filter(tags=t).order_by('-created_time')
     return render(request, 'index.html', {'articles': articles})
+
+
+# 404
+def page_not_found(request,exception):  # 注意点 ①
+    return render(request, '404/../templates/404.html')
+
+# # 500
+# def page_error(request):
+#     return render(request, '500.html')
