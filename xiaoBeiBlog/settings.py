@@ -80,6 +80,12 @@ WSGI_APPLICATION = 'xiaoBeiBlog.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -118,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
+STATIC_ROOT = os.path.join(BASE_DIR, "static").replace('\\', '/')

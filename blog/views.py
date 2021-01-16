@@ -1,26 +1,71 @@
 import re
-
 import markdown
+from markdown.extensions.toc import TocExtension
+
 from django.shortcuts import render, get_object_or_404
+from django.utils.text import slugify
+from django.views.generic import ListView, DetailView
+
 from .models import Category, Tag, Post
 
-from django.utils.text import slugify
-from markdown.extensions.toc import TocExtension
 # Create your views here.
+
+# def article_list(request):
+#     """ 文章列表 """
+#     articles = Post.objects.all()
+#
+#
+#     return render(request, 'index.html', {
+#         "articles": articles,
+#
+#     })
+
+
+# def article_detail(request, pk):
+#     """ 详情 """
+#     post = get_object_or_404(Post, pk=pk)
+#     # 阅读量+1
+#     post.increase_views()
+#
+#     md = markdown.Markdown(extensions=[
+#                                       'markdown.extensions.extra',
+#                                       'markdown.extensions.codehilite',
+#                                       # 'markdown.extensions.toc',
+#                                       TocExtension(slugify=slugify),
+#                                   ])
+#
+#     post.body = md.convert(post.body)
+#     m =re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
+#     post.toc = m.group(1) if m is not None else ''
+#
+#     return render(request, 'single.html', {
+#         "post": post,
+#     })
+
+
+# def archive(request, year, month):
+#     articles = Post.objects.filter(created_time__year=year,
+#                                     created_time__month=month
+#                                     ).order_by('-created_time')
+#     return render(request, 'index.html', {'articles': articles})
+
+
+# def category(request, pk):
+#     # 记得在开始部分导入 Category 类
+#     cate = get_object_or_404(Category, pk=pk)
+#     articles = Post.objects.filter(category=cate).order_by('-created_time')
+#     return render(request, 'index.html', {'articles': articles})
+
+
+# def tag(request, pk):
+#     # 记得在开始部分导入 Tag 类
+#     t = get_object_or_404(Tag, pk=pk)
+#     articles = Post.objects.filter(tags=t).order_by('-created_time')
+#     return render(request, 'index.html', {'articles': articles})
+
 
 def guidance(request):
     return render(request, 'guidance.html', )
-
-
-def article_list(request):
-    """ 文章列表 """
-    articles = Post.objects.all()
-
-
-    return render(request, 'index.html', {
-        "articles": articles,
-
-    })
 
 
 def full_width(request):
@@ -42,51 +87,72 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-def article_detail(request, pk):
-    """ 详情 """
-    post = get_object_or_404(Post, pk=pk)
+class IndexView(ListView):
+    model = Post
+    template_name = 'index.html'
+    context_object_name = 'articles'
 
 
-    md = markdown.Markdown(extensions=[
-                                      'markdown.extensions.extra',
-                                      'markdown.extensions.codehilite',
-                                      # 'markdown.extensions.toc',
-                                      TocExtension(slugify=slugify),
-                                  ])
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'single.html'
+    context_object_name = 'post'
 
-    post.body = md.convert(post.body)
-    m =re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
-    post.toc = m.group(1) if m is not None else ''
+    def get(self, request, *args, **kwargs):
+        response = super(PostDetailView, self).get(request, *args, **kwargs)
+        self.object.increase_views()
+        return response
 
-    return render(request, 'single.html', {
-        "post": post,
-    })
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset=None)
+        md = markdown.Markdown(extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+            # 'markdown.extensions.toc',
+            TocExtension(slugify=slugify),
+        ])
+        post.body = md.convert(post.body)
+        m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
+        post.toc = m.group(1) if m is not None else ''
 
-
-def archive(request, year, month):
-    articles = Post.objects.filter(created_time__year=year,
-                                    created_time__month=month
-                                    ).order_by('-created_time')
-    return render(request, 'index.html', {'articles': articles})
-
-
-def category(request, pk):
-    # 记得在开始部分导入 Category 类
-    cate = get_object_or_404(Category, pk=pk)
-    articles = Post.objects.filter(category=cate).order_by('-created_time')
-    return render(request, 'index.html', {'articles': articles})
+        return post
 
 
-def tag(request, pk):
-    # 记得在开始部分导入 Tag 类
-    t = get_object_or_404(Tag, pk=pk)
-    articles = Post.objects.filter(tags=t).order_by('-created_time')
-    return render(request, 'index.html', {'articles': articles})
+class ArchiveView(ListView):
+    model = Post
+    template_name = 'index.html'
+    context_object_name = 'articles'
+
+    def get_queryset(self):
+        articles = Post.objects.filter(created_time__year=self.kwargs.get('year'),
+                                       created_time__month=self.kwargs.get('month')).order_by('-created_time')
+        # return super(ArchiveView, self).get_queryset().filter(articles=articles)
+        return articles
+
+
+class CategoryView(ListView):
+    model = Post
+    template_name = 'index.html'
+    context_object_name = 'articles'
+
+    def get_queryset(self):
+        cate = get_object_or_404(Category, pk=self.kwargs.get('pk'))
+        return super(CategoryView, self).get_queryset().filter(category=cate)
+
+
+class TagView(ListView):
+    model = Post
+    template_name = 'index.html'
+    context_object_name = 'articles'
+
+    def get_queryset(self):
+        t = get_object_or_404(Tag,pk=self.kwargs.get('pk'))
+        return super(TagView, self).get_queryset().filter(tag=t)
 
 
 # 404
-def page_not_found(request,exception):  # 注意点 ①
-    return render(request, '404/../templates/404.html')
+def page_not_found(request, exception):  # 注意点 ①
+    return render(request, '404.html')
 
 # # 500
 # def page_error(request):

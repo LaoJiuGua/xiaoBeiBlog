@@ -54,6 +54,8 @@ class Post(models.Model):
     created_time = models.DateTimeField('创建时间', default=datetime.now)
     # 修改时间
     modified_time = models.DateTimeField('修改时间', auto_now=True)
+    # 阅读量
+    views = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = "文章"
@@ -77,3 +79,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'pk': self.pk})
+
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])

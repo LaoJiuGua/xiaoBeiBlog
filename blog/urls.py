@@ -7,14 +7,14 @@ from .views import *
 
 urlpatterns = [
     path('', guidance, name='guidance'),
-    path('list/', article_list, name='index'),
+    path('list/', IndexView.as_view(), name='index'),
     path('full/width/', full_width, name='full_width'),
     path('about/', about, name='about'),
     path('contact/', contact, name='contact'),
-    path('detail/<int:pk>/', article_detail, name='detail'),
-    path('archives/<int:year>/<int:month>/', archive, name='archive'),
-    path('categories/<int:pk>/', category, name='category'),
-    path('tags/<int:pk>/', tag, name='tag'),
+    path('detail/<int:pk>/', PostDetailView.as_view(), name='detail'),
+    path('archives/<int:year>/<int:month>/', ArchiveView.as_view(), name='archive'),
+    path('categories/<int:pk>/', CategoryView.as_view(), name='category'),
+    path('tags/<int:pk>/', TagView.as_view(), name='tag'),
     re_path('^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}, name='static'),
 ]
 
