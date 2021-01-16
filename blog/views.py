@@ -5,6 +5,8 @@ from markdown.extensions.toc import TocExtension
 from django.shortcuts import render, get_object_or_404
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView
+from django.core.paginator import Paginator
+from pure_pagination import PaginationMixin
 
 from .models import Category, Tag, Post
 
@@ -87,10 +89,11 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-class IndexView(ListView):
+class IndexView(PaginationMixin,ListView):
     model = Post
     template_name = 'index.html'
     context_object_name = 'articles'
+    paginate_by = 10
 
 
 class PostDetailView(DetailView):
@@ -147,7 +150,7 @@ class TagView(ListView):
 
     def get_queryset(self):
         t = get_object_or_404(Tag,pk=self.kwargs.get('pk'))
-        return super(TagView, self).get_queryset().filter(tag=t)
+        return super(TagView, self).get_queryset().filter(tags=t)
 
 
 # 404
