@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'pure_pagination',
     'blog',
     'comments.apps.CommentsConfig',
+    'mdeditor',
 ]
 
 MIDDLEWARE = [
@@ -129,6 +130,9 @@ STATIC_URL = '/static/'
 #     os.path.join(BASE_DIR, 'static')
 # ]
 STATIC_ROOT = os.path.join(BASE_DIR, "static").replace('\\', '/')
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')  #uploads必须存在，且在项目目录下
+# MEDIA_URL = '/media/'   #你上传的文件和图片会默认存在/uploads/editor下
 
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 4,  # 分页条当前页前后应该显示的总页数（两边均匀分布，因此要设置为偶数），

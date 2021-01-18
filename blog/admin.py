@@ -1,9 +1,13 @@
 from django.contrib import admin
 from .models import *
+from mdeditor.widgets import MDEditorWidget
 # Register your models here.
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.TextField: {'widget': MDEditorWidget}
+    }
     list_display = ('title', 'author', 'category', 'created_time', 'modified_time')
 
 

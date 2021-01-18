@@ -1,8 +1,11 @@
 import re
 import markdown
+# from django.core.checks import messages
+from django.contrib import messages
+from django.db.models import Q
 from markdown.extensions.toc import TocExtension
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator
@@ -66,6 +69,18 @@ from .models import Category, Tag, Post
 #     return render(request, 'index.html', {'articles': articles})
 
 
+def search(request):
+    q = request.GET.get('q')
+
+    if not q:
+        error_msg = "请输入搜索关键词"
+        messages.add_message(request, messages.ERROR, error_msg, extra_tags='danger')
+        return redirect('index')
+
+    post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'index.html', {'articles': post_list})
+
+
 def guidance(request):
     return render(request, 'guidance.html', )
 
@@ -93,7 +108,7 @@ class IndexView(PaginationMixin,ListView):
     model = Post
     template_name = 'index.html'
     context_object_name = 'articles'
-    paginate_by = 10
+    paginate_by = 5
 
 
 class PostDetailView(DetailView):
@@ -106,19 +121,19 @@ class PostDetailView(DetailView):
         self.object.increase_views()
         return response
 
-    def get_object(self, queryset=None):
-        post = super().get_object(queryset=None)
-        md = markdown.Markdown(extensions=[
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-            # 'markdown.extensions.toc',
-            TocExtension(slugify=slugify),
-        ])
-        post.body = md.convert(post.body)
-        m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
-        post.toc = m.group(1) if m is not None else ''
-
-        return post
+    # def get_object(self, queryset=None):
+    #     post = super().get_object(queryset=None)
+    #     md = markdown.Markdown(extensions=[
+    #         'markdown.extensions.extra',
+    #         'markdown.extensions.codehilite',
+    #         # 'markdown.extensions.toc',
+    #         TocExtension(slugify=slugify),
+    #     ])
+    #     post.body = md.convert(post.body)
+    #     m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
+    #     post.toc = m.group(1) if m is not None else ''
+    #
+    #     return post
 
 
 class ArchiveView(ListView):
